@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Новый рецепт{% endblock %}
+
+{% block content %}
+<section class="section section--narrow">
+    <h1 class="section__title">Добавить рецепт</h1>
+    <form method="post" enctype="multipart/form-data" class="form">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        {% for field in form %}
+            <div class="form__group">
+                <label for="{{ field.id_for_label }}" class="form__label">{{ field.label }}</label>
+                {{ field }}
+                {% if field.help_text %}
+                    <p class="form__help">{{ field.help_text }}</p>
+                {% endif %}
+                {% for error in field.errors %}
+                    <p class="form__error">{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endfor %}
+        <button type="submit" class="button">Сохранить рецепт</button>
+    </form>
+</section>
+{% endblock %}
+

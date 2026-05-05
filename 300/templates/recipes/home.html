@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+
+{% block title %}Сезонные рецепты{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="hero__content">
+        <p class="hero__eyebrow">Новые вкусы каждый день</p>
+        <h1 class="hero__title">Готовьте с любовью, наслаждайтесь каждым вкусом</h1>
+        <p class="hero__text">
+            Подборки сезонных блюд, проверенные рецепты и вдохновение для уютных ужинов.
+        </p>
+        <a href="#latest-recipes" class="button hero__button">Смотреть рецепты</a>
+    </div>
+    <div class="hero__media">
+        <img
+            src="https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=1200&q=80"
+            alt="Тарелка с красивой подачей блюда"
+            class="hero__image"
+        >
+    </div>
+</section>
+
+<section class="section" id="categories">
+    <div class="section__head">
+        <h2 class="section__title">Категории</h2>
+        <a href="{% url 'recipes:home' %}" class="section__link">Все категории</a>
+    </div>
+    <div class="categories-grid">
+        {% for category in categories %}
+            <a href="{% url 'recipes:category' slug=category.slug %}" class="category-chip">
+                <span class="category-chip__icon">🍽</span>
+                <span class="category-chip__name">{{ category.name }}</span>
+            </a>
+        {% empty %}
+            <div class="card card--placeholder">Категории пока не добавлены</div>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="section">
+    <div class="section__head">
+        <h2 class="section__title">Сезонные рецепты</h2>
+    </div>
+    <div class="cards">
+        {% for recipe in seasonal_recipes %}
+            <a href="{% url 'recipes:detail' pk=recipe.pk %}" class="card card--link">
+                {% if recipe.image %}
+                    <div class="card__image-wrapper">
+                        <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}" class="card__image">
+                    </div>
+                {% endif %}
+                <div class="card__body">
+                    <h3 class="card__title">{{ recipe.title }}</h3>
+                    {% if recipe.category %}
+                        <p class="card__meta">{{ recipe.category.name }}</p>
+                    {% endif %}
+                    <p class="card__time">⏱ ~40 мин</p>
+                </div>
+            </a>
+        {% empty %}
+            <div class="card card--placeholder">Пока нет сезонных рецептов</div>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="section" id="latest-recipes">
+    <div class="section__head">
+        <h2 class="section__title">Последние рецепты</h2>
+    </div>
+    {% if search_query %}
+        <p class="section__caption">Результаты поиска по запросу: «{{ search_query }}»</p>
+    {% endif %}
+    <div class="cards">
+        {% for recipe in latest_recipes %}
+            <a href="{% url 'recipes:detail' pk=recipe.pk %}" class="card card--link">
+                {% if recipe.image %}
+                    <div class="card__image-wrapper">
+                        <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}" class="card__image">
+                    </div>
+                {% endif %}
+                <div class="card__body">
+                    <h3 class="card__title">{{ recipe.title }}</h3>
+                    {% if recipe.category %}
+                        <p class="card__meta">{{ recipe.category.name }}</p>
+                    {% endif %}
+                    <p class="card__time">⏱ ~35 мин</p>
+                </div>
+            </a>
+        {% empty %}
+            <div class="card card--placeholder">Пока нет добавленных рецептов</div>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="section" id="blog">
+    <div class="section__head">
+        <h2 class="section__title">Кулинарный блог</h2>
+    </div>
+    <div class="blog-grid">
+        <article class="blog-card">
+            <h3 class="blog-card__title">5 идей полезных завтраков</h3>
+            <p class="blog-card__text">Быстрые и вкусные блюда, которые зарядят энергией на весь день.</p>
+        </article>
+        <article class="blog-card">
+            <h3 class="blog-card__title">Как хранить зелень дольше</h3>
+            <p class="blog-card__text">Простые лайфхаки для свежих ингредиентов и насыщенного вкуса блюд.</p>
+        </article>
+    </div>
+</section>
+
+<section class="section subscribe">
+    <div class="subscribe__inner">
+        <div>
+            <h2 class="section__title">Подписка на новые рецепты</h2>
+            <p class="section__caption">Получайте свежие подборки рецептов и кулинарные советы на email.</p>
+        </div>
+        <form class="subscribe__form" action="#" method="post">
+            <input type="email" class="subscribe__input" placeholder="Ваш email" required>
+            <button type="submit" class="button">Подписаться</button>
+        </form>
+    </div>
+</section>
+{% endblock %}
+

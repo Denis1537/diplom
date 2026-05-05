@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}Профиль{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="section__head">
+        <h1 class="section__title">Личный кабинет</h1>
+    </div>
+    <div class="profile">
+        <div class="profile__info">
+            <p><strong>Логин:</strong> {{ request.user.username }}</p>
+            {% if request.user.email %}
+                <p><strong>Email:</strong> {{ request.user.email }}</p>
+            {% endif %}
+        </div>
+        <div class="profile__actions">
+            <a href="{% url 'recipes:add' %}" class="button">Добавить рецепт</a>
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="section__head">
+        <h2 class="section__title">Мои рецепты</h2>
+    </div>
+    <div class="cards">
+        {% for recipe in user_recipes %}
+            <a href="{% url 'recipes:detail' pk=recipe.pk %}" class="card card--link">
+                {% if recipe.image %}
+                    <div class="card__image-wrapper">
+                        <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}" class="card__image">
+                    </div>
+                {% endif %}
+                <div class="card__body">
+                    <h3 class="card__title">{{ recipe.title }}</h3>
+                    {% if recipe.category %}
+                        <p class="card__meta">{{ recipe.category.name }}</p>
+                    {% endif %}
+                    <p class="card__time">⏱ ~40 мин</p>
+                </div>
+            </a>
+        {% empty %}
+            <div class="card card--placeholder">Вы ещё не добавили ни одного рецепта</div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}
+

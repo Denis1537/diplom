@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}{{ category.name }}{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="section__head">
+        <h1 class="section__title">{{ category.name }}</h1>
+    </div>
+    <div class="cards">
+        {% for recipe in recipes %}
+            <a href="{% url 'recipes:detail' pk=recipe.pk %}" class="card card--link">
+                {% if recipe.image %}
+                    <div class="card__image-wrapper">
+                        <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}" class="card__image">
+                    </div>
+                {% endif %}
+                <div class="card__body">
+                    <h3 class="card__title">{{ recipe.title }}</h3>
+                    <p class="card__meta">Автор: {{ recipe.author }}</p>
+                    <p class="card__time">⏱ ~45 мин</p>
+                </div>
+            </a>
+        {% empty %}
+            <div class="card card--placeholder">В этой категории пока нет рецептов</div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}
+

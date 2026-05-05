@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}Мои закладки{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="section__head">
+        <h1 class="section__title">Мои закладки</h1>
+    </div>
+    <div class="cards">
+        {% for fav in favorites %}
+            <a href="{% url 'recipes:detail' pk=fav.recipe.pk %}" class="card card--link">
+                {% if fav.recipe.image %}
+                    <div class="card__image-wrapper">
+                        <img src="{{ fav.recipe.image.url }}" alt="{{ fav.recipe.title }}" class="card__image">
+                    </div>
+                {% endif %}
+                <div class="card__body">
+                    <h3 class="card__title">{{ fav.recipe.title }}</h3>
+                    {% if fav.recipe.category %}
+                        <p class="card__meta">{{ fav.recipe.category.name }}</p>
+                    {% endif %}
+                    <p class="card__time">⏱ ~35 мин</p>
+                </div>
+            </a>
+        {% empty %}
+            <div class="card card--placeholder">
+                В закладках пока пусто. Добавьте понравившиеся рецепты со страницы рецепта.
+            </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}
+
